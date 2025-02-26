@@ -1,0 +1,2 @@
+# eatWise
+ai based app
