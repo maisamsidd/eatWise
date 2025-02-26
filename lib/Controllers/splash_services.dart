@@ -1,3 +1,4 @@
+import 'package:eat_wise/View/Authentication/test_page.dart';
 import 'package:eat_wise/View/HomePage/home_page.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +13,7 @@ class SplashServices extends GetxController {
         Get.off(() => const LoginPage());
       } else {
         // Navigate to HomePage
-        Get.off(() => const HomePage());
+        Get.off(() => const TestPage());
       }
     });
   }

@@ -1,6 +1,7 @@
 import 'package:eat_wise/Utils/Apis_utils.dart';
 import 'package:eat_wise/Utils/app_colors.dart';
 import 'package:eat_wise/View/Authentication/signup_page.dart';
+import 'package:eat_wise/View/Authentication/test_page.dart';
 import 'package:eat_wise/View/HomePage/home_page.dart';
 import 'package:eat_wise/Widgets/Buttons/ls_button.dart';
 import 'package:eat_wise/Widgets/TextFields/login/ls_textfield.dart';
@@ -20,39 +21,27 @@ class LoginPage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: MyColors.greyColor,
+        backgroundColor: Colors.orange,
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // Header
-              Container(
-                height: 80,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4,
-                      spreadRadius: 2,
-                    )
-                  ],
-                ),
-                child: const Center(
-                  child: Text(
-                    "Login",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
               SizedBox(height: mq.height * 0.1),
-
-              // Login Card
+              Text(
+                "Welcome back",
+                style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: MyColors.whiteColor),
+              ),
+              Text(
+                "Login to continue",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: MyColors.whiteColor),
+              ),
+              SizedBox(height: mq.height * 0.05),
               Container(
                 padding: const EdgeInsets.all(20),
                 width: mq.width * 0.9,
@@ -94,7 +83,7 @@ class LoginPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HomePage()));
+                                  builder: (context) => const TestPage()));
                         }).onError(
                           (error, stackTrace) {
                             Get.snackbar("Error", error.toString());
@@ -125,8 +114,6 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: mq.height * 0.03),
-
-              // OR divider
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -138,12 +125,8 @@ class LoginPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: mq.height * 0.03),
-
-              // Google Sign-In Button
               GestureDetector(
-                onTap: () {
-                  // Add Google sign-in logic here
-                },
+                onTap: () {},
                 child: Container(
                   height: 50,
                   width: mq.width * 0.7,
