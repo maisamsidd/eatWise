@@ -14,95 +14,119 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final nameController = TextEditingController();
+  final ageController = TextEditingController();
+
+  void showAddUserDialog(BuildContext context) {
+    // Local state for checkboxes
+    bool hasDiabetes = false;
+    bool hasHypertension = false;
+    bool hasDehydration = false;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text("Add a Profile"),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: nameController,
+                      decoration: const InputDecoration(
+                        labelText: "Full Name",
+                        hintText: "John Doe",
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    CheckboxListTile(
+                      title: const Text("Diabetes"),
+                      value: hasDiabetes,
+                      onChanged: (val) {
+                        setState(() {
+                          hasDiabetes = val ?? false;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text("Hypertension"),
+                      value: hasHypertension,
+                      onChanged: (val) {
+                        setState(() {
+                          hasHypertension = val ?? false;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text("Dehydration"),
+                      value: hasDehydration,
+                      onChanged: (val) {
+                        setState(() {
+                          hasDehydration = val ?? false;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: ageController,
+                      decoration: const InputDecoration(
+                        labelText: "Age",
+                        hintText: "24",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: const Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (nameController.text.isNotEmpty &&
+                        ageController.text.isNotEmpty) {
+                      ApisUtils.users
+                          .doc(ApisUtils.auth.currentUser!.uid.toString())
+                          .collection("userDetails")
+                          .add({
+                        "name": nameController.text,
+                        "age": ageController.text,
+                        "hasDiabetes": hasDiabetes,
+                        "hasHypertension": hasHypertension,
+                        "hasDehydration": hasDehydration,
+                      });
+
+                      nameController.clear();
+                      ageController.clear();
+                      Get.back();
+                    } else {
+                      Get.snackbar(
+                        "Error",
+                        "All fields are required",
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    }
+                  },
+                  child: const Text("Add"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final nameController = TextEditingController();
-    final ageController = TextEditingController();
-    final diseaseController = TextEditingController();
-
-    void showAddUserDialog(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Add a Profile"),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(
-                      labelText: "Full Name",
-                      hintText: "John Doe",
-                    ),
-                  ),
-                  TextField(
-                    controller: ageController,
-                    decoration: const InputDecoration(
-                      labelText: "Condition",
-                      hintText: "e.g., Diabetes",
-                    ),
-                  ),
-                  TextField(
-                    controller: diseaseController,
-                    decoration: const InputDecoration(
-                      labelText: "Age",
-                      hintText: "24",
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Get.back();
-                },
-                child: const Text("Cancel"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (nameController.text.isNotEmpty &&
-                      ageController.text.isNotEmpty &&
-                      diseaseController.text.isNotEmpty) {
-                    ApisUtils.users
-                        .doc(ApisUtils.auth.currentUser!.uid.toString())
-                        .collection("userDetails")
-                        .add({
-                      "name": nameController.text,
-                      "age": ageController.text,
-                      "disease": diseaseController.text,
-                    });
-
-                    nameController.clear();
-                    ageController.clear();
-                    diseaseController.clear();
-                    Get.back();
-                  } else {
-                    Get.snackbar(
-                      "Error",
-                      "All fields are required",
-                      snackPosition: SnackPosition.BOTTOM,
-                    );
-                  }
-                },
-                child: const Text("Add"),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 144, 207, 236),
-      // floatingActionButton: FloatingActionButton(
-      //   child: const Icon(Icons.add),
-      //   onPressed: () {
-
-      //   },
-      // ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
@@ -186,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                     elevation: 5,
                     child: Container(
                       width: double.infinity,
-                      height: 100,
+                      height: 150, // Increased height to accommodate more text
                       decoration: BoxDecoration(
                         color: MyColors.greyColor,
                         borderRadius: BorderRadius.circular(15),
@@ -203,12 +227,25 @@ class _HomePageState extends State<HomePage> {
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                             Text(
-                                "Condition: ${docData['age'] ?? "No Condition"}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18)),
-                            Text("Age: ${docData['disease'] ?? "No Age"}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18)),
+                              "Age: ${docData['age'] ?? "No Age"}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                            Text(
+                              "Diabetes: ${docData['hasDiabetes'] ?? "No Data"}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                            Text(
+                              "Hypertension: ${docData['hasHypertension'] ?? "No Data"}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                            Text(
+                              "Dehydration: ${docData['hasDehydration'] ?? "No Data"}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
                           ],
                         ),
                       ),

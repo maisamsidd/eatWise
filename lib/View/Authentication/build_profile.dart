@@ -63,7 +63,7 @@ class _SignUpBuildState extends State<SignUpBuild> {
                 decoration: BoxDecoration(
                   color: MyColors.whiteColor,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black12,
                       blurRadius: 6,

@@ -10,16 +10,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
 
   @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+final TextEditingController confirmPasswordController = TextEditingController();
+
+class _SignupPageState extends State<SignupPage> {
+  @override
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context).size;
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController confirmPasswordController =
-        TextEditingController();
 
     return SafeArea(
       child: Scaffold(
@@ -52,7 +57,7 @@ class SignupPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: MyColors.whiteColor,
                     borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 6,
@@ -95,7 +100,7 @@ class SignupPage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const TestPage()));
+                                      builder: (context) => const HomePage()));
                             }).onError(
                               (error, stackTrace) {
                                 Get.snackbar("Error", error.toString());

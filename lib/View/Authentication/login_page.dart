@@ -10,14 +10,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context).size;
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
 
     return SafeArea(
       child: Scaffold(
@@ -48,7 +53,7 @@ class LoginPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: MyColors.whiteColor,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black12,
                       blurRadius: 6,
@@ -83,7 +88,7 @@ class LoginPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const TestPage()));
+                                  builder: (context) => const HomePage()));
                         }).onError(
                           (error, stackTrace) {
                             Get.snackbar("Error", error.toString());
@@ -114,9 +119,9 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: mq.height * 0.03),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Expanded(
                       child: Divider(thickness: 1, indent: 30, endIndent: 10)),
                   Text("Or", style: TextStyle(fontSize: 15)),
@@ -133,7 +138,7 @@ class LoginPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 4,
@@ -141,9 +146,9 @@ class LoginPage extends StatelessWidget {
                       )
                     ],
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       FaIcon(FontAwesomeIcons.google, color: Colors.red),
                       SizedBox(width: 10),
                       Text(

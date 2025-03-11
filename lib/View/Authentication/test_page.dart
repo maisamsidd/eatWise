@@ -22,7 +22,7 @@ class _TestPageState extends State<TestPage> {
                   .signOut()
                   .then((onValue) => Get.to(() => const LoginPage()));
             },
-            child: Text("Logout")),
+            child: const Text("Logout")),
       ),
     );
   }
